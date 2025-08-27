@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function BuyerSignUp() {
-  const [userType, setUserType] = React.useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleProceed = async () => {
-    console.log(userType)
+
+
+
+  const handleSignUp = async () => {
+    console.log(name, email, mobile, password);
+
     //your proceed logic here
   }
 
@@ -45,19 +52,98 @@ function BuyerSignUp() {
             <h1 className='text-[1.8rem] font-semibold text-[#2e2e2e]'>Pre-requisites</h1>
             <p className='text-[#4e4e4e]'>Please select your Role in the Buyer Organisation</p>
           </div>
-          <div className="pre-req-form flex flex-col gap-[0.2rem]">
-            <h2 className='text-[1.1rem]'>User Type</h2>
-            <div className="io flex justify-between">
-              <select className="outline-none w-1/2 rounded-xl" value={userType}
-                onChange={(e) => setUserType(e.target.value)}>
-                <option value="">Select type of User</option>
-                <option value="hod" >Primary User (HOD)</option>
-                <option value="va">Verifying Authority</option>
-              </select>
 
-              <button className={`text-[1.2rem] font-semibold  rounded-xl ${userType ? 'bg-[#07222e] text-white' : 'text-[#8f8f8f] bg-[#d5d5d5]'}`} onClick={handleProceed}>Proceed</button>
+          {/* Signup Form */}
+
+          <div
+            className="flex justify-center items-center"
+            style={{ padding: "20px", margin: "0" }}
+          >
+            <div
+              className="bg-white rounded-lg shadow-lg w-full max-w-md"
+              style={{ padding: "30px", margin: "10px" }}
+            >
+              <h2
+                className="text-2xl font-bold text-center text-gray-800"
+                style={{ marginBottom: "20px" }}
+              >
+                Sign Up
+              </h2>
+              <form>
+                {/* Name */}
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="block text-gray-700 font-medium mb-1">Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter your name"
+                    className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    style={{ padding: "10px" }}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                  />
+                </div>
+
+                {/* Email */}
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="block text-gray-700 font-medium mb-1">Email</label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07222e] outline-none"
+                    style={{ padding: "10px" }}
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                  />
+                </div>
+
+                {/* Mobile */}
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="block text-gray-700 font-medium mb-1">
+                    Mobile No
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder="Enter your mobile number"
+                    className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07222e] outline-none"
+                    style={{ padding: "10px" }}
+                    onChange={(e) => setMobile(e.target.value)}
+                    value={mobile}
+                  />
+                </div>
+
+                {/* Password */}
+                <div style={{ marginBottom: "20px" }}>
+                  <label className="block text-gray-700 font-medium mb-1">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Enter your password"
+                    className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07222e] outline-none"
+                    style={{ padding: "10px" }}
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  />
+                </div>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  className="w-full bg-[#07222e] text-white rounded-lg "
+                  style={{ padding: "12px", marginTop: "10px" }}
+                  onClick={handleSignUp}
+                >
+                  Sign Up
+                </button>
+              </form>
             </div>
           </div>
+
+
+
+
+
+
           <div className="bot-text">
             <p className='font-semibold'>If you want to register as the buyers/ users involved in procurement process please contact Primary user (HOD) of your organisation</p>
             <span className='text-[0.8rem]'>Note:- Only non buying roles i.e. Primary User (HOD)/ Verifying Authority can get registered from here.</span>

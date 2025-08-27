@@ -1,186 +1,152 @@
-import React, { useState } from "react";
-import { IoMdNotifications } from "react-icons/io";
-import { FiMenu } from "react-icons/fi";
-import { IoMdClose } from "react-icons/io";
+import React, { useState, useEffect } from "react";
+import { FiHome, FiUser, FiSettings, FiLogOut, FiMenu } from "react-icons/fi";
 
-const Dashboard = () => {
-    const [isOpen, setIsOpen] = useState(false);
+export default function Dashboard() {
+    const [isOpen, setIsOpen] = useState(true);
+    const [activeMenu, setActiveMenu] = useState("userDetails");
+    useEffect(() => {
+        if (window.innerWidth < 768) {   // Mobile width
+            setIsOpen(false);
+        } else {
+            setIsOpen(true);
+        }
+    }, []);
 
     return (
-        <div>
-            {/* Header */}
+        <div className="flex h-screen bg-gray-100">
+            {/* Sidebar */}
             <div
-                className="h-16 w-full border-b border-gray-800 bg-gray-900 flex items-center justify-between text-white"
-                style={{ padding: "0px 20px" }}
+                className={`${isOpen ? "w-64" : "w-20"} bg-white shadow-lg transition-all duration-300`}
             >
-                {/* Left Section */}
-                <div className="flex items-center gap-3">
-                    {/* Toggle button (mobile only) */}
+                {/* Logo */}
+                <div
+                    className="flex items-center justify-between border-b"
+                    style={{ padding: "16px" }}
+                >
+                    <h1
+                        className={`text-xl font-bold text-gray-700 ${!isOpen && "hidden"}`}
+                    >
+                        MyDashboard
+                    </h1>
                     <button
-                        className="lg:hidden text-white text-2xl"
-                        onClick={() => setIsOpen(true)}
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="text-gray-700 text-xl"
                     >
                         <FiMenu />
                     </button>
-
-                    <div className="text-xl font-bold tracking-wide">MyDashboard</div>
-                    <div className="text-gray-400 text-sm hidden sm:block">gem.gov.in</div>
                 </div>
 
-                {/* Right Section */}
-                <div className="flex items-center gap-6">
-                    <button className="relative">
-                        <IoMdNotifications
-                            size={25}
-                            className="text-gray-300 hover:text-white transition"
-                        />
-                        <span className="absolute top-0 right-0 inline-flex h-2 w-2 rounded-full bg-red-500"></span>
-                    </button>
-
-                    <div className="flex flex-col items-end">
-                        <span className="font-semibold">Aman Kumar</span>
-                        <span className="text-xs text-gray-400">Last login: 7:30 PM Today</span>
-                    </div>
-                </div>
+                {/* Menu */}
+                <nav style={{ marginTop: "24px" }}>
+                    <ul style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                        <li
+                            onClick={() => setActiveMenu("userDetails")}
+                            className={`flex items-center rounded-lg cursor-pointer ${activeMenu === "userDetails" ? "bg-gray-200 font-semibold" : "hover:bg-gray-200"
+                                }`}
+                            style={{ padding: "10px 16px" }}
+                        >
+                            <FiHome className="text-lg" />
+                            {isOpen && <span style={{ marginLeft: "12px" }}>User Details</span>}
+                        </li>
+                        <li
+                            onClick={() => setActiveMenu("currentBids")}
+                            className={`flex items-center rounded-lg cursor-pointer ${activeMenu === "currentBids" ? "bg-gray-200 font-semibold" : "hover:bg-gray-200"
+                                }`}
+                            style={{ padding: "10px 16px" }}
+                        >
+                            <FiUser className="text-lg" />
+                            {isOpen && <span style={{ marginLeft: "12px" }}>Current Bids</span>}
+                        </li>
+                        <li
+                            onClick={() => setActiveMenu("settings")}
+                            className={`flex items-center rounded-lg cursor-pointer ${activeMenu === "settings" ? "bg-gray-200 font-semibold" : "hover:bg-gray-200"
+                                }`}
+                            style={{ padding: "10px 16px" }}
+                        >
+                            <FiSettings className="text-lg" />
+                            {isOpen && <span style={{ marginLeft: "12px" }}>Settings</span>}
+                        </li>
+                        <li
+                            className="flex items-center hover:bg-gray-200 rounded-lg cursor-pointer text-red-600"
+                            style={{ padding: "10px 16px" }}
+                        >
+                            <FiLogOut className="text-lg" />
+                            {isOpen && <span style={{ marginLeft: "12px" }}>Logout</span>}
+                        </li>
+                    </ul>
+                </nav>
             </div>
 
-            {/* Layout */}
-            <div className="flex bg-white">
-                {/* Sidebar */}
+            {/* Main Content */}
+            <div className="flex-1 overflow-y-auto" style={{ padding: "24px" }}>
+                {/* Header */}
                 <div
-                    className={`
-                        fixed top-0 left-0 h-full w-64 bg-gray-900 text-white flex flex-col
-                        transform ${isOpen ? "translate-x-0" : "-translate-x-full"}
-                        transition-transform duration-300 z-50 
-                        lg:translate-x-0 lg:top-16 lg:h-[calc(100vh-64px)]
-                    `}
-                    style={{ padding: "20px" }}
+                    className="flex flex-col sm:flex-row justify-between items-start sm:items-center"
+                    style={{ marginBottom: "24px", gap: "12px" }}
                 >
-                    {/* Close button (mobile only) */}
-                    <button
-                        className="lg:hidden text-white text-2xl self-end mb-4"
-                        onClick={() => setIsOpen(false)}
+                    <h2 className="text-2xl font-semibold text-gray-700">Dashboard</h2>
+
+                    <div
+                        className="flex items-center gap-3 bg-white rounded-xl shadow"
+                        style={{ padding: "8px 12px", margin: "8px 0" }}
                     >
-                        <IoMdClose />
-                    </button>
-
-                    <ul className="flex flex-col gap-3 w-full">
-                        <li className="hover:text-blue-400 cursor-pointer">User Details</li>
-                        <li className="hover:text-blue-400 cursor-pointer">Settings</li>
-                        <li className="hover:text-red-400 cursor-pointer">Logout</li>
-                    </ul>
-                </div>
-
-                {/* Content Area */}
-                <div
-                    className="flex-1 overflow-y-auto bg-white w-full"
-                    style={{
-                        padding: "32px",
-                        height: "calc(100vh - 64px)",
-                        marginLeft: "0px",
-                    }}
-                >
-                    {/*  User Details */}
-                    <div style={{ marginLeft: "256px" }} className="hidden lg:block">
-                        <h1
-                            className="text-2xl font-bold"
-                            style={{ marginBottom: "24px" }}
-                        >
-                            User Details
-                        </h1>
-
-                        {/* Container */}
-                        <div
-                            className="bg-gray-100 border border-gray-300 shadow-md rounded-lg"
-                            style={{ padding: "24px", maxWidth: "800px" }}
-                        >
-                            {/* Row: Full Name */}
-                            <div
-                                className="flex justify-between items-center border-b border-gray-300"
-                                style={{ padding: "12px 0" }}
-                            >
-                                <label className="text-gray-600 font-medium w-1/3">Full Name</label>
-                                <p className="text-gray-900 font-semibold w-2/3">Aman Kumar</p>
-                            </div>
-
-                            {/* Row: Username */}
-                            <div
-                                className="flex justify-between items-center border-b border-gray-300"
-                                style={{ padding: "12px 0" }}
-                            >
-                                <label className="text-gray-600 font-medium w-1/3">Username</label>
-                                <p className="text-gray-900 font-semibold w-2/3">aman_k</p>
-                            </div>
-
-                            {/* Row: Email */}
-                            <div
-                                className="flex justify-between items-center border-b border-gray-300"
-                                style={{ padding: "12px 0" }}
-                            >
-                                <label className="text-gray-600 font-medium w-1/3">Email Address</label>
-                                <p className="text-gray-900 font-semibold w-2/3">aman@example.com</p>
-                            </div>
-
-                            {/* Row: User Type */}
-                            <div
-                                className="flex justify-between items-center border-b border-gray-300"
-                                style={{ padding: "12px 0" }}
-                            >
-                                <label className="text-gray-600 font-medium w-1/3">User Type</label>
-                                <p className="text-gray-900 font-semibold w-2/3">Administrator</p>
-                            </div>
-
-                            {/* Row: Last Login */}
-                            <div
-                                className="flex justify-between items-center"
-                                style={{ padding: "12px 0" }}
-                            >
-                                <label className="text-gray-600 font-medium w-1/3">Last Login</label>
-                                <p className="text-gray-900 font-semibold w-2/3">7:30 PM, Today</p>
-                            </div>
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjDGMp734S91sDuUFqL51_xRTXS15iiRoHew&s"
+                            alt=""
+                            className="rounded-full w-10 h-10"
+                            style={{ marginRight: "8px" }}
+                        />
+                        <div>
+                            <p className="text-gray-700 font-medium" style={{ marginBottom: "2px" }}>
+                                John Doe
+                            </p>
+                            <p className="text-xs text-gray-500">
+                                Last Login: 27 Aug 2025, 10:15 AM
+                            </p>
                         </div>
                     </div>
+                </div>
 
-                    {/*  mobile/tablet view  */}
-                    <div className="lg:hidden">
-                        <h1
-                            className="text-2xl font-bold"
-                            style={{ marginBottom: "24px" }}
-                        >
+                {/* Dynamic Sections */}
+                {activeMenu === "userDetails" && (
+                    <div className="bg-white rounded-2xl shadow" style={{ padding: "24px" }}>
+                        <h3 className="text-lg font-semibold" style={{ marginBottom: "16px" }}>
                             User Details
-                        </h1>
-
+                        </h3>
                         <div
-                            className="bg-gray-100 border border-gray-300 shadow-md rounded-lg"
-                            style={{ padding: "24px", maxWidth: "800px" }}
+                            className="grid grid-cols-1 sm:grid-cols-2 text-gray-700"
+                            style={{ gap: "16px" }}
                         >
-                            <div className="flex justify-between items-center border-b border-gray-300" style={{ padding: "12px 0" }}>
-                                <label className="text-gray-600 font-medium w-1/3">Full Name</label>
-                                <p className="text-gray-900 font-semibold w-2/3">Aman Kumar</p>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-gray-300" style={{ padding: "12px 0" }}>
-                                <label className="text-gray-600 font-medium w-1/3">Username</label>
-                                <p className="text-gray-900 font-semibold w-2/3">aman_k</p>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-gray-300" style={{ padding: "12px 0" }}>
-                                <label className="text-gray-600 font-medium w-1/3">Email Address</label>
-                                <p className="text-gray-900 font-semibold w-2/3">aman@example.com</p>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-gray-300" style={{ padding: "12px 0" }}>
-                                <label className="text-gray-600 font-medium w-1/3">User Type</label>
-                                <p className="text-gray-900 font-semibold w-2/3">Administrator</p>
-                            </div>
-                            <div className="flex justify-between items-center" style={{ padding: "12px 0" }}>
-                                <label className="text-gray-600 font-medium w-1/3">Last Login</label>
-                                <p className="text-gray-900 font-semibold w-2/3">7:30 PM, Today</p>
-                            </div>
+                            <p><span className="font-medium">Name:</span> John Doe</p>
+                            <p><span className="font-medium">Email:</span> john.doe@mail.com</p>
+                            <p><span className="font-medium">Phone:</span> +91 9876543210</p>
+                            <p><span className="font-medium">City:</span> Varanasi</p>
                         </div>
                     </div>
+                )}
 
-                </div>
+                {activeMenu === "currentBids" && (
+                    <div className="bg-white rounded-2xl shadow" style={{ padding: "24px" }}>
+                        <h3 className="text-lg font-semibold" style={{ marginBottom: "16px" }}>
+                            Current Bids
+                        </h3>
+                        <ul style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                            <li className="border-b pb-2">Bid #1 – ₹500 – Pending</li>
+                            <li className="border-b pb-2">Bid #2 – ₹1200 – Won</li>
+                            <li>Bid #3 – ₹750 – Lost</li>
+                        </ul>
+                    </div>
+                )}
+
+                {activeMenu === "settings" && (
+                    <div className="bg-white rounded-2xl shadow" style={{ padding: "24px" }}>
+                        <h3 className="text-lg font-semibold" style={{ marginBottom: "16px" }}>
+                            Settings
+                        </h3>
+                        <p className="text-gray-700">Here you can manage your preferences.</p>
+                    </div>
+                )}
             </div>
         </div>
     );
-};
-
-export default Dashboard;
+}
